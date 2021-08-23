@@ -93,7 +93,7 @@ public class ProductAPIController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<ResponseDto>> Delete([FromBody] Guid id)
+    public async Task<ActionResult<ResponseDto>> Delete([FromRoute] Guid id)
     {
         try
         {
