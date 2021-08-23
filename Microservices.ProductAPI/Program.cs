@@ -1,4 +1,7 @@
+using AutoMapper;
+using Microservices.ProductAPI;
 using Microservices.ProductAPI.DbContexts;
+using Microservices.ProductAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
@@ -11,6 +14,11 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Microservices.ProductAPI", Version = "v1" });
 });
+IMapper? mapper = MappingConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
 WebApplication? app = builder.Build();
 
