@@ -17,7 +17,7 @@ public class ProductRepository : IProductRepository
         this.mapper = mapper;
     }
 
-    public async Task<ProductDto> CreateUpdateProduct(ProductDto product)
+    public async Task<ProductDto> CreateUpdateProductAsync(ProductDto product)
     {
         Product? productEntity = mapper.Map<ProductDto, Product>(product);
         if (productEntity.ProductId != Guid.Empty)

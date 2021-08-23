@@ -6,6 +6,6 @@ public interface IProductRepository
 {
     Task<IEnumerable<ProductDto>> GetProductsAsync();
     Task<ProductDto> GetProductByIdAsync(Guid productId);
-    Task<ProductDto> CreateUpdateProduct(ProductDto product);
+    Task<ProductDto> CreateUpdateProductAsync(ProductDto product);
     ValueTask<bool> DeleteProductAsync(Guid productId);
 }
