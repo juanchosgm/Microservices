@@ -7,21 +7,19 @@ using System.Text;
 namespace Microservices.Web.Services;
 public class BaseService : IBaseService
 {
+    private readonly IHttpClientFactory httpClientFactory;
+
     public BaseService(IHttpClientFactory httpClientFactory)
     {
-        ResponseModel = new ResponseDto();
-        HttpClient = httpClientFactory;
+        this.httpClientFactory = httpClientFactory;
     }
-
-    public ResponseDto ResponseModel { get; set; }
-    public IHttpClientFactory HttpClient { get; set; }
 
     public async Task<T?> SendAsync<T>(ApiRequest request)
     {
         try
         {
-            HttpClient? client = HttpClient.CreateClient("MicroservicesAPI");
-            HttpRequestMessage? message = new HttpRequestMessage();
+            HttpClient? client = httpClientFactory.CreateClient("MicroservicesAPI");
+            HttpRequestMessage? message = new();
             message.Headers.Add("Accept", "application/json");
             message.RequestUri = new Uri(request.Url);
             client.DefaultRequestHeaders.Clear();
@@ -44,10 +42,13 @@ public class BaseService : IBaseService
         }
         catch (Exception ex)
         {
-            ResponseDto? dto = new ResponseDto
+            ResponseDto? dto = new()
             {
                 DisplayMessage = "Error",
-                ErrorMessages = { Convert.ToString(ex.Message) },
+                ErrorMessages = new()
+                {
+                    Convert.ToString(ex.Message)
+                },
                 IsSuccess = false
             };
             string? content = JsonConvert.SerializeObject(dto);
