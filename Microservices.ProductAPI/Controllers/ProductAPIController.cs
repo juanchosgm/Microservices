@@ -1,5 +1,6 @@
 ﻿using Microservices.ProductAPI.Models.Dtos;
 using Microservices.ProductAPI.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Microservices.ProductAPI.Controllers;
@@ -16,6 +17,7 @@ public class ProductAPIController : ControllerBase
         response = new ResponseDto();
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<ResponseDto>> Get()
     {
@@ -27,7 +29,7 @@ public class ProductAPIController : ControllerBase
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.ErrorMessages = new List<string>
+            response.ErrorMessages = new()
             {
                 ex.ToString()
             };
@@ -36,6 +38,7 @@ public class ProductAPIController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<ResponseDto>> Get([FromRoute] Guid id)
     {
         try
@@ -46,7 +49,7 @@ public class ProductAPIController : ControllerBase
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.ErrorMessages = new List<string>
+            response.ErrorMessages = new()
             {
                 ex.ToString()
             };
@@ -55,6 +58,7 @@ public class ProductAPIController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<ResponseDto>> Post([FromBody] ProductDto product)
     {
         try
@@ -65,7 +69,7 @@ public class ProductAPIController : ControllerBase
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.ErrorMessages = new List<string>
+            response.ErrorMessages = new()
             {
                 ex.ToString()
             };
@@ -74,6 +78,7 @@ public class ProductAPIController : ControllerBase
     }
 
     [HttpPut]
+    [Authorize]
     public async Task<ActionResult<ResponseDto>> Put([FromBody] ProductDto product)
     {
         try
@@ -84,7 +89,7 @@ public class ProductAPIController : ControllerBase
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.ErrorMessages = new List<string>
+            response.ErrorMessages = new()
             {
                 ex.ToString()
             };
@@ -93,6 +98,7 @@ public class ProductAPIController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ResponseDto>> Delete([FromRoute] Guid id)
     {
         try
@@ -103,7 +109,7 @@ public class ProductAPIController : ControllerBase
         catch (Exception ex)
         {
             response.IsSuccess = false;
-            response.ErrorMessages = new List<string>
+            response.ErrorMessages = new()
             {
                 ex.ToString()
             };
