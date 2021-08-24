@@ -2,15 +2,34 @@
 using Microservices.Web.Services;
 using Microservices.Web.Services.IServices;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient<IProductService, ProductService>();
 Microservices.Web.SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddControllersWithViews();
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = "Cookies";
+        options.DefaultChallengeScheme = "oidc";
+    })
+    .AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
+    .AddOpenIdConnect("oidc", opt =>
+    {
+        opt.Authority = builder.Configuration["ServiceUrls:IdentityAPI"];
+        opt.GetClaimsFromUserInfoEndpoint = true;
+        opt.ClientId = "microservices.web";
+        opt.ClientSecret = "secret";
+        opt.ResponseType = "code";
+        opt.TokenValidationParameters.NameClaimType = "name";
+        opt.TokenValidationParameters.RoleClaimType = "role";
+        opt.Scope.Add("Microservices");
+        opt.SaveTokens = true;
+    });
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -28,7 +47,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
