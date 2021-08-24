@@ -3,16 +3,16 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:29803",
-      "sslPort": 44344
+      "applicationUrl": "http://localhost:41332",
+      "sslPort": 44361
     }
   },
   "profiles": {
-    "Microservices.Web": {
+    "Microservices.Services.Identity": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:44344;http://localhost:29803",
+      "applicationUrl": "https://localhost:44361;http://localhost:41332",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
