@@ -1,8 +1,10 @@
 
+using Duende.IdentityServer.Services;
 using Microservices.Services.Identity;
 using Microservices.Services.Identity.DbContexts;
 using Microservices.Services.Identity.Initializer;
 using Microservices.Services.Identity.Models;
+using Microservices.Services.Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +32,7 @@ builder.Services
     .AddDeveloperSigningCredential();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -22,7 +22,7 @@ builder.Services.AddAuthentication("Bearer")
         opt.Authority = "https://localhost:44361/";
         opt.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = true
+            ValidateAudience = false
         };
     });
 builder.Services.AddAuthorization(opt =>
@@ -76,7 +76,7 @@ if (builder.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,5 +1,6 @@
 ﻿using Microservices.Web.Models;
 using Microservices.Web.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -74,6 +75,7 @@ public class ProductController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> ProductDelete(Guid productId)
     {
         ResponseDto? response = await productService.GetProductByIdAsync<ResponseDto>(productId);

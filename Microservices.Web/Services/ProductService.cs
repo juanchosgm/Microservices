@@ -1,14 +1,20 @@
 ﻿
 using Microservices.Web.Models;
 using Microservices.Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Microservices.Web.Services;
 public class ProductService : BaseService, IProductService
 {
-    public ProductService(IHttpClientFactory httpClientFactory)
+    private readonly IHttpContextAccessor httpContextAccessor;
+
+    public ProductService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         : base(httpClientFactory)
     {
+        this.httpContextAccessor = httpContextAccessor;
     }
+
+    public string AccessToken => httpContextAccessor.HttpContext.GetTokenAsync("access_token").GetAwaiter().GetResult();
 
     public async Task<T?> CreateProductAsync<T>(ProductDto product)
     {
@@ -17,7 +23,7 @@ public class ProductService : BaseService, IProductService
             ApiType = SD.ApiType.POST,
             Data = product,
             Url = $"{SD.ProductAPIBase}/api/products",
-            AccessToken = string.Empty
+            AccessToken = AccessToken
         });
     }
 
@@ -27,7 +33,7 @@ public class ProductService : BaseService, IProductService
         {
             ApiType = SD.ApiType.DELETE,
             Url = $"{SD.ProductAPIBase}/api/products/{id}",
-            AccessToken = string.Empty
+            AccessToken = AccessToken
         });
     }
 
@@ -37,7 +43,7 @@ public class ProductService : BaseService, IProductService
         {
             ApiType = SD.ApiType.GET,
             Url = $"{SD.ProductAPIBase}/api/products",
-            AccessToken = string.Empty
+            AccessToken = AccessToken
         });
     }
 
@@ -47,7 +53,7 @@ public class ProductService : BaseService, IProductService
         {
             ApiType = SD.ApiType.GET,
             Url = $"{SD.ProductAPIBase}/api/products/{id}",
-            AccessToken = string.Empty
+            AccessToken = AccessToken
         });
     }
 
@@ -58,7 +64,7 @@ public class ProductService : BaseService, IProductService
             ApiType = SD.ApiType.PUT,
             Data = product,
             Url = $"{SD.ProductAPIBase}/api/products",
-            AccessToken = string.Empty
+            AccessToken = AccessToken
         });
     }
 }

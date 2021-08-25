@@ -2,6 +2,7 @@
 using Microservices.Web.Models;
 using Microservices.Web.Services.IServices;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Microservices.Web.Services;
@@ -27,6 +28,10 @@ public class BaseService : IBaseService
             {
                 message.Content = new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json");
             }
+            if (!string.IsNullOrEmpty(request.AccessToken))
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.AccessToken);
+            }
             HttpResponseMessage? response = null;
             message.Method = request.ApiType switch
             {
@@ -36,6 +41,7 @@ public class BaseService : IBaseService
                 _ => HttpMethod.Get,
             };
             response = await client.SendAsync(message);
+            response = response.EnsureSuccessStatusCode();
             string content = await response.Content.ReadAsStringAsync();
             T? result = JsonConvert.DeserializeObject<T>(content);
             return result;

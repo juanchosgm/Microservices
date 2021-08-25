@@ -8,6 +8,7 @@ WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient<IProductService, ProductService>();
 Microservices.Web.SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllersWithViews();
 builder.Services
     .AddAuthentication(options =>
