@@ -1,22 +1,46 @@
 ﻿using Microservices.Web.Models;
+using Microservices.Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Microservices.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IProductService productService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IProductService productService)
     {
         _logger = logger;
+        this.productService = productService;
     }
 
-    public IActionResult Index()
+    [HttpGet]
+    public async Task<IActionResult> Index()
     {
-        return View();
+        List<ProductDto> products = new();
+        ResponseDto? response = await productService.GetAllProductsAsync<ResponseDto>();
+        if (response != null && response.IsSuccess)
+        {
+            products = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+        }
+        return View(products);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Details(Guid productId)
+    {
+        ProductDto? product = new();
+        ResponseDto? response = await productService.GetProductByIdAsync<ResponseDto>(productId);
+        if (response != null && response.IsSuccess)
+        {
+            product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+        }
+        return View(product);
     }
 
     public IActionResult Privacy()
@@ -33,7 +57,7 @@ public class HomeController : Controller
     [Authorize]
     public async Task<IActionResult> Login()
     {
-        var accessToken = await HttpContext.GetTokenAsync("access_token");
+        string? accessToken = await HttpContext.GetTokenAsync("access_token");
         return RedirectToAction(nameof(Index));
     }
 

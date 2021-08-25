@@ -75,7 +75,6 @@ public class ProductController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> ProductDelete(Guid productId)
     {
         ResponseDto? response = await productService.GetProductByIdAsync<ResponseDto>(productId);
