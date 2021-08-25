@@ -1,9 +1,9 @@
 ﻿
 using AutoMapper;
-using Microservices.ProductAPI.Models;
-using Microservices.ProductAPI.Models.Dtos;
+using Microservices.Services.ProductAPI.Models;
+using Microservices.Services.ProductAPI.Models.Dtos;
 
-namespace Microservices.ProductAPI;
+namespace Microservices.Services.ProductAPI;
 public class MappingConfig
 {
     public static MapperConfiguration RegisterMaps()

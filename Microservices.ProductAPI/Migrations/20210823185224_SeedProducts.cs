@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Microservices.ProductAPI.Migrations
+namespace Microservices.Services.ProductAPI.Migrations
 {
     public partial class SeedProducts : Migration
     {

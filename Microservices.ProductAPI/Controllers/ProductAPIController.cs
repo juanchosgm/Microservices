@@ -1,9 +1,9 @@
-﻿using Microservices.ProductAPI.Models.Dtos;
-using Microservices.ProductAPI.Repository;
+﻿using Microservices.Services.ProductAPI.Models.Dtos;
+using Microservices.Services.ProductAPI.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Microservices.ProductAPI.Controllers;
+namespace Microservices.Services.ProductAPI.Controllers;
 [Route("api/products")]
 [ApiController]
 public class ProductAPIController : ControllerBase

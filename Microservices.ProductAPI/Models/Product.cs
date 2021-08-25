@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace Microservices.ProductAPI.Models;
+namespace Microservices.Services.ProductAPI.Models;
 public class Product
 {
     [Key]

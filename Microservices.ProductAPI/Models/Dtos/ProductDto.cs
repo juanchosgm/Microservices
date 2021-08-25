@@ -1,5 +1,5 @@
 ﻿
-namespace Microservices.ProductAPI.Models.Dtos;
+namespace Microservices.Services.ProductAPI.Models.Dtos;
 public class ProductDto
 {
     public Guid ProductId { get; set; }

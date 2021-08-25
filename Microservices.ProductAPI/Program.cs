@@ -1,7 +1,7 @@
 using AutoMapper;
-using Microservices.ProductAPI;
-using Microservices.ProductAPI.DbContexts;
-using Microservices.ProductAPI.Repository;
+using Microservices.Services.ProductAPI;
+using Microservices.Services.ProductAPI.DbContexts;
+using Microservices.Services.ProductAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

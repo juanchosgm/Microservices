@@ -1,5 +1,5 @@
 ﻿
-namespace Microservices.ProductAPI.Models.Dtos;
+namespace Microservices.Services.ProductAPI.Models.Dtos;
 public class ResponseDto
 {
     public bool IsSuccess { get; set; } = true;

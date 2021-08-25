@@ -1,8 +1,8 @@
 ﻿
-using Microservices.ProductAPI.Models;
+using Microservices.Services.ProductAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Microservices.ProductAPI.DbContexts;
+namespace Microservices.Services.ProductAPI.DbContexts;
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

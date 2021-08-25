@@ -1,7 +1,7 @@
 ﻿
-using Microservices.ProductAPI.Models.Dtos;
+using Microservices.Services.ProductAPI.Models.Dtos;
 
-namespace Microservices.ProductAPI.Repository;
+namespace Microservices.Services.ProductAPI.Repository;
 public interface IProductRepository
 {
     Task<IEnumerable<ProductDto>> GetProductsAsync();

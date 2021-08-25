@@ -1,11 +1,11 @@
 ﻿
 using AutoMapper;
-using Microservices.ProductAPI.DbContexts;
-using Microservices.ProductAPI.Models;
-using Microservices.ProductAPI.Models.Dtos;
+using Microservices.Services.ProductAPI.DbContexts;
+using Microservices.Services.ProductAPI.Models;
+using Microservices.Services.ProductAPI.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 
-namespace Microservices.ProductAPI.Repository;
+namespace Microservices.Services.ProductAPI.Repository;
 public class ProductRepository : IProductRepository
 {
     private readonly ApplicationDbContext context;
