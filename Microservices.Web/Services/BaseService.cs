@@ -1,6 +1,7 @@
 ﻿
 using Microservices.Web.Models;
 using Microservices.Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -9,11 +10,15 @@ namespace Microservices.Web.Services;
 public class BaseService : IBaseService
 {
     private readonly IHttpClientFactory httpClientFactory;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
-    public BaseService(IHttpClientFactory httpClientFactory)
+    public BaseService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
     {
         this.httpClientFactory = httpClientFactory;
+        this.httpContextAccessor = httpContextAccessor;
     }
+
+    protected string AccessToken => httpContextAccessor.HttpContext.GetTokenAsync("access_token").GetAwaiter().GetResult();
 
     public async Task<T?> SendAsync<T>(ApiRequest request)
     {
