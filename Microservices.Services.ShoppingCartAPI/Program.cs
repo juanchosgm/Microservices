@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microservices.Services.ShoppingCartAPI;
 using Microservices.Services.ShoppingCartAPI.DbContexts;
+using Microservices.Services.ShoppingCartAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 IMapper? mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", opt =>
