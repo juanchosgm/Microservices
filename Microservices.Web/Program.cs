@@ -5,10 +5,13 @@ using Microservices.Web.Services.IServices;
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddHttpClient<IProductService, ProductService>();
-Microservices.Web.SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
-builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient<IProductService, ProductService>();
+builder.Services.AddHttpClient<ICartService, CartService>();
+Microservices.Web.SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
+Microservices.Web.SD.ShoppingCartAPIBase = builder.Configuration["ServiceUrls:ShoppingCartAPI"];
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddControllersWithViews();
 builder.Services
     .AddAuthentication(options =>

@@ -16,8 +16,8 @@ public class CartController : ControllerBase
         response = new();
     }
 
-    [HttpGet]
-    public async Task<ActionResult<ResponseDto>> GetCart(string userId)
+    [HttpGet("{userId}")]
+    public async Task<ActionResult<ResponseDto>> GetCart([FromRoute] string userId)
     {
         try
         {
@@ -74,7 +74,7 @@ public class CartController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<ResponseDto>> RemoveCart(Guid id)
+    public async Task<ActionResult<ResponseDto>> RemoveCart([FromRoute] Guid id)
     {
         try
         {
