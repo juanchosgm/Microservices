@@ -13,7 +13,8 @@ Microservices.Web.SD.ProductAPIBase = builder.Configuration["ServiceUrls:Product
 Microservices.Web.SD.ShoppingCartAPIBase = builder.Configuration["ServiceUrls:ShoppingCartAPI"];
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddRazorRuntimeCompilation();
 builder.Services
     .AddAuthentication(options =>
     {
