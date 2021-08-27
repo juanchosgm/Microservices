@@ -21,7 +21,7 @@ public class CartController : ControllerBase
     {
         try
         {
-            var cart = await cartRepository.GetCartByUserIdAsync(userId);
+            CartDto? cart = await cartRepository.GetCartByUserIdAsync(userId);
             response.Result = cart;
         }
         catch (Exception ex)
@@ -40,7 +40,7 @@ public class CartController : ControllerBase
     {
         try
         {
-            var cartResult = await cartRepository.CreateUpdateCartAsync(cart);
+            CartDto? cartResult = await cartRepository.CreateUpdateCartAsync(cart);
             response.Result = cart;
         }
         catch (Exception ex)
@@ -59,7 +59,7 @@ public class CartController : ControllerBase
     {
         try
         {
-            var cartResult = await cartRepository.CreateUpdateCartAsync(cart);
+            CartDto? cartResult = await cartRepository.CreateUpdateCartAsync(cart);
             response.Result = cart;
         }
         catch (Exception ex)
@@ -78,7 +78,7 @@ public class CartController : ControllerBase
     {
         try
         {
-            var removed = await cartRepository.RemoveFromCartAsync(id);
+            bool removed = await cartRepository.RemoveFromCartAsync(id);
             response.Result = removed;
         }
         catch (Exception ex)

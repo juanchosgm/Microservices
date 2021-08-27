@@ -1,6 +1,7 @@
 
 using Microservices.Web.Services;
 using Microservices.Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ builder.Services
         opt.ClientId = "microservices.web";
         opt.ClientSecret = "secret";
         opt.ResponseType = "code";
+        opt.ClaimActions.MapJsonKey("role", "role", "role");
+        opt.ClaimActions.MapJsonKey("sub", "sub", "sub");
         opt.TokenValidationParameters.NameClaimType = "name";
         opt.TokenValidationParameters.RoleClaimType = "role";
         opt.Scope.Add("Microservices");

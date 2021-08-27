@@ -11,11 +11,14 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IProductService productService;
+    private readonly ICartService cartService;
 
-    public HomeController(ILogger<HomeController> logger, IProductService productService)
+    public HomeController(ILogger<HomeController> logger, IProductService productService,
+        ICartService cartService)
     {
         _logger = logger;
         this.productService = productService;
+        this.cartService = cartService;
     }
 
     [HttpGet]
@@ -39,6 +42,36 @@ public class HomeController : Controller
         if (response != null && response.IsSuccess)
         {
             product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+        }
+        return View(product);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Details(ProductDto product)
+    {
+        CartDto cart = new()
+        {
+            CartHeader = new()
+            {
+                UserId = User.FindFirst("sub").Value
+            }
+        };
+        CartDetailDto cartDetail = new()
+        {
+            Count = product.Count,
+            ProductId = product.ProductId,
+        };
+        ResponseDto? response = await productService.GetProductByIdAsync<ResponseDto>(product.ProductId);
+        if (response is not null && response.IsSuccess)
+        {
+            cartDetail.Product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+        }
+        cart.CartDetails = new List<CartDetailDto> { cartDetail };
+        ResponseDto? addToCartResponse = await cartService.AddToCartAsync<ResponseDto>(cart);
+        if (addToCartResponse is not null && addToCartResponse.IsSuccess)
+        {
+            return RedirectToAction(nameof(Index));
         }
         return View(product);
     }
