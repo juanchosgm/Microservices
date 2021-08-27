@@ -43,6 +43,7 @@ public class BaseService : IBaseService
                 SD.ApiType.POST => HttpMethod.Post,
                 SD.ApiType.PUT => HttpMethod.Put,
                 SD.ApiType.DELETE => HttpMethod.Delete,
+                SD.ApiType.PATCH => HttpMethod.Patch,
                 _ => HttpMethod.Get,
             };
             response = await client.SendAsync(message);

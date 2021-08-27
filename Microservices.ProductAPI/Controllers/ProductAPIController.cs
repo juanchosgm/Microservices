@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Microservices.Services.ProductAPI.Controllers;
 [Route("api/products")]
 [ApiController]
-public class ProductAPIController : ControllerBase
+public class ProductApiController : ControllerBase
 {
     private readonly IProductRepository productRepository;
     protected ResponseDto response;
 
-    public ProductAPIController(IProductRepository productRepository)
+    public ProductApiController(IProductRepository productRepository)
     {
         this.productRepository = productRepository;
         response = new ResponseDto();

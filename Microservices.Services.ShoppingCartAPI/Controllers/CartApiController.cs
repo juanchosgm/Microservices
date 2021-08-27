@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Microservices.Services.ShoppingCartAPI.Controllers;
 [Route("api/cart")]
 [ApiController]
-public class CartController : ControllerBase
+public class CartApiController : ControllerBase
 {
     private readonly ICartRepository cartRepository;
     protected ResponseDto response;
 
-    public CartController(ICartRepository cartRepository)
+    public CartApiController(ICartRepository cartRepository)
     {
         this.cartRepository = cartRepository;
         response = new();
@@ -80,6 +80,44 @@ public class CartController : ControllerBase
         {
             bool removed = await cartRepository.RemoveFromCartAsync(id);
             response.Result = removed;
+        }
+        catch (Exception ex)
+        {
+            response.IsSuccess = false;
+            response.ErrorMessages = new()
+            {
+                ex.ToString()
+            };
+        }
+        return response;
+    }
+
+    [HttpPatch]
+    public async Task<ActionResult<ResponseDto>> ApplyCupon([FromBody] CartDto cart)
+    {
+        try
+        {
+            var couponAdded = await cartRepository.ApplyCouponAsync(cart.CartHeader.UserId, cart.CartHeader.CouponCode);
+            response.Result = couponAdded;
+        }
+        catch (Exception ex)
+        {
+            response.IsSuccess = false;
+            response.ErrorMessages = new()
+            {
+                ex.ToString()
+            };
+        }
+        return response;
+    }
+
+    [HttpDelete("RemoveCoupon/{userId}")]
+    public async Task<ActionResult<ResponseDto>> RemoveCoupon([FromRoute] string userId)
+    {
+        try
+        {
+            var couponRemoved = await cartRepository.RemoveCouponAsync(userId);
+            response.Result = couponRemoved;
         }
         catch (Exception ex)
         {

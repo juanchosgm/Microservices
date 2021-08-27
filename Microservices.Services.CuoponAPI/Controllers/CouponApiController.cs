@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Microservices.Services.CouponAPI.Controllers;
 [Route("api/coupon")]
 [ApiController]
-public class CouponController : ControllerBase
+public class CouponApiController : ControllerBase
 {
     private readonly ICouponRepository couponRepository;
     protected ResponseDto response;
 
-    public CouponController(ICouponRepository couponRepository)
+    public CouponApiController(ICouponRepository couponRepository)
     {
         this.couponRepository = couponRepository;
         response = new ResponseDto();

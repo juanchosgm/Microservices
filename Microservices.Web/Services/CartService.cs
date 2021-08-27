@@ -21,12 +21,33 @@ public class CartService : BaseService, ICartService
         });
     }
 
+    public async Task<T> ApplyCouponAsync<T>(CartDto cart)
+    {
+        return await SendAsync<T>(new ApiRequest
+        {
+            ApiType = SD.ApiType.PATCH,
+            Data = cart,
+            Url = $"{SD.ShoppingCartAPIBase}/api/cart",
+            AccessToken = AccessToken
+        });
+    }
+
     public async Task<T> GetCartByUserIdAsync<T>(string userId)
     {
         return await SendAsync<T>(new ApiRequest
         {
             ApiType = SD.ApiType.GET,
             Url = $"{SD.ShoppingCartAPIBase}/api/cart/{userId}",
+            AccessToken = AccessToken
+        });
+    }
+
+    public async Task<T> RemoveCouponAsync<T>(string userId)
+    {
+        return await SendAsync<T>(new ApiRequest
+        {
+            ApiType = SD.ApiType.DELETE,
+            Url = $"{SD.ShoppingCartAPIBase}/api/cart/RemoveCoupon/{userId}",
             AccessToken = AccessToken
         });
     }

@@ -24,9 +24,35 @@ public class CartController : Controller
         return View(cart);
     }
 
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> ApplyCoupon(CartDto cart)
+    {
+        var response = await cartService.ApplyCouponAsync<ResponseDto>(cart);
+        if (response is not null && response.IsSuccess)
+        {
+            return RedirectToAction(nameof(CartIndex));
+        }
+        return View();
+    }
+
+    [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Remove(Guid cartDetailId)
     {
         ResponseDto? response = await cartService.RemoveFromCartAsync<ResponseDto>(cartDetailId);
+        if (response is not null && response.IsSuccess)
+        {
+            return RedirectToAction(nameof(CartIndex));
+        }
+        return View();
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> RemoveCoupon(CartDto cart)
+    {
+        var response = await cartService.RemoveCouponAsync<ResponseDto>(cart.CartHeader.UserId);
         if (response is not null && response.IsSuccess)
         {
             return RedirectToAction(nameof(CartIndex));
