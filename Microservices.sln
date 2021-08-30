@@ -20,7 +20,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Services.Iden
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Services.ShoppingCartAPI", "Microservices.Services.ShoppingCartAPI\Microservices.Services.ShoppingCartAPI.csproj", "{D465558C-5239-4BE2-878E-3B3DBF39DC9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.Services.CouponAPI", "Microservices.Services.CuoponAPI\Microservices.Services.CouponAPI.csproj", "{74D869C1-4D2D-4699-81C4-CDBDB6275D3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservices.Services.CouponAPI", "Microservices.Services.CuoponAPI\Microservices.Services.CouponAPI.csproj", "{74D869C1-4D2D-4699-81C4-CDBDB6275D3F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{DEB91F2B-6FDC-4758-B87C-B302D3FEA4D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservices.MessageBus", "Microservices.MessageBus\Microservices.MessageBus.csproj", "{0455E593-90D2-4761-929B-339A4DB68C36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +52,10 @@ Global
 		{74D869C1-4D2D-4699-81C4-CDBDB6275D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74D869C1-4D2D-4699-81C4-CDBDB6275D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74D869C1-4D2D-4699-81C4-CDBDB6275D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0455E593-90D2-4761-929B-339A4DB68C36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0455E593-90D2-4761-929B-339A4DB68C36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0455E593-90D2-4761-929B-339A4DB68C36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0455E593-90D2-4761-929B-339A4DB68C36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,7 @@ Global
 		{7F006D72-DF84-4C5C-8AA1-B682238DE36F} = {B0B2212E-7E70-4D7A-BEE6-2A8A9BF8228B}
 		{D465558C-5239-4BE2-878E-3B3DBF39DC9F} = {B0B2212E-7E70-4D7A-BEE6-2A8A9BF8228B}
 		{74D869C1-4D2D-4699-81C4-CDBDB6275D3F} = {B0B2212E-7E70-4D7A-BEE6-2A8A9BF8228B}
+		{0455E593-90D2-4761-929B-339A4DB68C36} = {DEB91F2B-6FDC-4758-B87C-B302D3FEA4D5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9F261971-5735-429F-B38A-1162BD7BA0D4}

@@ -32,6 +32,17 @@ public class CartService : BaseService, ICartService
         });
     }
 
+    public async Task<T> CheckoutAsync<T>(CartHeaderDto cartHeader)
+    {
+        return await SendAsync<T>(new ApiRequest
+        {
+            ApiType = SD.ApiType.POST,
+            Data = cartHeader,
+            Url = $"{SD.ShoppingCartAPIBase}/api/cart/Checkout",
+            AccessToken = AccessToken
+        });
+    }
+
     public async Task<T> GetCartByUserIdAsync<T>(string userId)
     {
         return await SendAsync<T>(new ApiRequest

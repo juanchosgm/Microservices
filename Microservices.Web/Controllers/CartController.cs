@@ -23,7 +23,7 @@ public class CartController : Controller
     [Authorize]
     public async Task<IActionResult> CartIndex()
     {
-        var cart = await LoadCartByUser();
+        CartDto? cart = await LoadCartByUser();
         return View(cart);
     }
 
@@ -31,7 +31,7 @@ public class CartController : Controller
     [Authorize]
     public async Task<IActionResult> ApplyCoupon(CartDto cart)
     {
-        var response = await cartService.ApplyCouponAsync<ResponseDto>(cart);
+        ResponseDto? response = await cartService.ApplyCouponAsync<ResponseDto>(cart);
         if (response is not null && response.IsSuccess)
         {
             return RedirectToAction(nameof(CartIndex));
@@ -55,11 +55,39 @@ public class CartController : Controller
     [Authorize]
     public async Task<IActionResult> RemoveCoupon(CartDto cart)
     {
-        var response = await cartService.RemoveCouponAsync<ResponseDto>(cart.CartHeader.UserId);
+        ResponseDto? response = await cartService.RemoveCouponAsync<ResponseDto>(cart.CartHeader.UserId);
         if (response is not null && response.IsSuccess)
         {
             return RedirectToAction(nameof(CartIndex));
         }
+        return View();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Checkout()
+    {
+        CartDto? cart = await LoadCartByUser();
+        return View(cart);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Checkout(CartDto cart)
+    {
+        try
+        {
+            ResponseDto? response = await cartService.CheckoutAsync<ResponseDto>(cart.CartHeader);
+            return RedirectToAction(nameof(Confirmation));
+        }
+        catch (Exception)
+        {
+            return View(cart);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult Confirmation()
+    {
         return View();
     }
 
@@ -76,10 +104,10 @@ public class CartController : Controller
         {
             if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
             {
-                var couponResponse = await couponService.GetCouponAsync<ResponseDto>(cart.CartHeader.CouponCode);
+                ResponseDto? couponResponse = await couponService.GetCouponAsync<ResponseDto>(cart.CartHeader.CouponCode);
                 if (couponResponse is not null && couponResponse.IsSuccess)
                 {
-                    var coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(couponResponse.Result));
+                    CouponDto? coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(couponResponse.Result));
                     cart.CartHeader.DiscountTotal = coupon.DiscountAmount;
                 }
             }

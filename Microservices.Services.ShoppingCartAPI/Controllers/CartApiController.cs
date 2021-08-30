@@ -1,4 +1,5 @@
-﻿using Microservices.Services.ShoppingCartAPI.Models.Dtos;
+﻿using Microservices.MessageBus;
+using Microservices.Services.ShoppingCartAPI.Models.Dtos;
 using Microservices.Services.ShoppingCartAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +9,13 @@ namespace Microservices.Services.ShoppingCartAPI.Controllers;
 public class CartApiController : ControllerBase
 {
     private readonly ICartRepository cartRepository;
+    private readonly IMessageBus messageBus;
     protected ResponseDto response;
 
-    public CartApiController(ICartRepository cartRepository)
+    public CartApiController(ICartRepository cartRepository, IMessageBus messageBus)
     {
         this.cartRepository = cartRepository;
+        this.messageBus = messageBus;
         response = new();
     }
 
@@ -97,7 +100,7 @@ public class CartApiController : ControllerBase
     {
         try
         {
-            var couponAdded = await cartRepository.ApplyCouponAsync(cart.CartHeader.UserId, cart.CartHeader.CouponCode);
+            bool couponAdded = await cartRepository.ApplyCouponAsync(cart.CartHeader.UserId, cart.CartHeader.CouponCode);
             response.Result = couponAdded;
         }
         catch (Exception ex)
@@ -116,8 +119,32 @@ public class CartApiController : ControllerBase
     {
         try
         {
-            var couponRemoved = await cartRepository.RemoveCouponAsync(userId);
+            bool couponRemoved = await cartRepository.RemoveCouponAsync(userId);
             response.Result = couponRemoved;
+        }
+        catch (Exception ex)
+        {
+            response.IsSuccess = false;
+            response.ErrorMessages = new()
+            {
+                ex.ToString()
+            };
+        }
+        return response;
+    }
+
+    [HttpPost("Checkout")]
+    public async Task<ActionResult<ResponseDto>> Checkout([FromBody] CheckoutHeaderDto checkoutHeader)
+    {
+        try
+        {
+            CartDto? cart = await cartRepository.GetCartByUserIdAsync(checkoutHeader.UserId);
+            if (cart is null)
+            {
+                return BadRequest();
+            }
+            IEnumerable<CartDetailDto>? details = cart.CartDetails;
+            await messageBus.PublishMessage(checkoutHeader, "checkoutmessagetopic");
         }
         catch (Exception ex)
         {

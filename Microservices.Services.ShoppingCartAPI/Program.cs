@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microservices.MessageBus;
 using Microservices.Services.ShoppingCartAPI;
 using Microservices.Services.ShoppingCartAPI.DbContexts;
 using Microservices.Services.ShoppingCartAPI.Repository;
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 IMapper? mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
+builder.Services.AddAzureServiceBus();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddControllers();

@@ -25,4 +25,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Microservices.MessageBus\Microservices.MessageBus.csproj" />
+  </ItemGroup>
+
 </Project>
