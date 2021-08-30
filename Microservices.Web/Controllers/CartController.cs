@@ -9,11 +9,14 @@ public class CartController : Controller
 {
     private readonly IProductService productService;
     private readonly ICartService cartService;
+    private readonly ICouponService couponService;
 
-    public CartController(IProductService productService, ICartService cartService)
+    public CartController(IProductService productService, ICartService cartService,
+        ICouponService couponService)
     {
         this.productService = productService;
         this.cartService = cartService;
+        this.couponService = couponService;
     }
 
     [HttpGet]
@@ -71,10 +74,20 @@ public class CartController : Controller
         }
         if (cart.CartHeader is not null)
         {
+            if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+            {
+                var couponResponse = await couponService.GetCouponAsync<ResponseDto>(cart.CartHeader.CouponCode);
+                if (couponResponse is not null && couponResponse.IsSuccess)
+                {
+                    var coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(couponResponse.Result));
+                    cart.CartHeader.DiscountTotal = coupon.DiscountAmount;
+                }
+            }
             foreach (CartDetailDto? cartDetail in cart.CartDetails)
             {
                 cart.CartHeader.OrderTotal += cartDetail.Product.Price * cartDetail.Count;
             }
+            cart.CartHeader.OrderTotal -= cart.CartHeader.DiscountTotal;
         }
         return cart;
     }
