@@ -76,7 +76,10 @@ public class CartRepository : ICartRepository
             }
             else
             {
+                cartEntity.CartDetails.FirstOrDefault().Product = null;
                 cartEntity.CartDetails.FirstOrDefault().Count += existingCartDetail.Count;
+                cartEntity.CartDetails.FirstOrDefault().CartDetailId = existingCartDetail.CartDetailId;
+                cartEntity.CartDetails.FirstOrDefault().CartHeaderId = existingCartDetail.CartHeaderId;
                 context.CartDetails.Update(cartEntity.CartDetails.FirstOrDefault());
                 await context.SaveChangesAsync();
             }

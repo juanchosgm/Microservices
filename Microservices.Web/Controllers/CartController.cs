@@ -77,6 +77,11 @@ public class CartController : Controller
         try
         {
             ResponseDto? response = await cartService.CheckoutAsync<ResponseDto>(cart.CartHeader);
+            if (response is not null && !response.IsSuccess)
+            {
+                TempData["Error"] = response.DisplayMessage;
+                return RedirectToAction(nameof(Checkout));
+            }
             return RedirectToAction(nameof(Confirmation));
         }
         catch (Exception)

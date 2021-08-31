@@ -9,14 +9,17 @@ namespace Microservices.Services.ShoppingCartAPI.Controllers;
 public class CartApiController : ControllerBase
 {
     private readonly ICartRepository cartRepository;
+    private readonly ICouponRepository couponRepository;
     private readonly IMessageBus messageBus;
     private readonly IConfiguration configuration;
     protected ResponseDto response;
 
-    public CartApiController(ICartRepository cartRepository, IMessageBus messageBus,
+    public CartApiController(ICartRepository cartRepository, ICouponRepository couponRepository,
+        IMessageBus messageBus,
         IConfiguration configuration)
     {
         this.cartRepository = cartRepository;
+        this.couponRepository = couponRepository;
         this.messageBus = messageBus;
         this.configuration = configuration;
         response = new();
@@ -145,6 +148,17 @@ public class CartApiController : ControllerBase
             if (cart is null)
             {
                 return BadRequest();
+            }
+            if (!string.IsNullOrEmpty(checkoutHeader.CouponCode))
+            {
+                CouponDto? coupon = await couponRepository.GetCouponAsync(checkoutHeader.CouponCode);
+                if (checkoutHeader.DiscountTotal != coupon.DiscountAmount)
+                {
+                    response.IsSuccess = false;
+                    response.ErrorMessages = new() { "Coupon price has changed, please confirm" };
+                    response.DisplayMessage = "Coupon price has changed, please confirm";
+                    return response;
+                }
             }
             checkoutHeader.CartDetails = cart.CartDetails;
             await messageBus.PublishMessage(checkoutHeader, configuration["CheckoutMessageTopic"]);
