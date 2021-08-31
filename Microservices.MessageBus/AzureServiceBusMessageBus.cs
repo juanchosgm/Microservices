@@ -15,7 +15,7 @@ namespace Microservices.MessageBus
 
         public async Task PublishMessage(BaseMessage input, string topicName)
         {
-            await using ServiceBusClient? client = new(configuration["Azure:ServiceBusConnectionString"]);
+            await using ServiceBusClient? client = new(configuration["ServiceBusConnectionString"]);
             ServiceBusSender? sender = client.CreateSender(topicName);
             string? payload = JsonConvert.SerializeObject(input);
             ServiceBusMessage? message = new(payload)

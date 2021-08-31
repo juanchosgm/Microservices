@@ -10,12 +10,15 @@ public class CartApiController : ControllerBase
 {
     private readonly ICartRepository cartRepository;
     private readonly IMessageBus messageBus;
+    private readonly IConfiguration configuration;
     protected ResponseDto response;
 
-    public CartApiController(ICartRepository cartRepository, IMessageBus messageBus)
+    public CartApiController(ICartRepository cartRepository, IMessageBus messageBus,
+        IConfiguration configuration)
     {
         this.cartRepository = cartRepository;
         this.messageBus = messageBus;
+        this.configuration = configuration;
         response = new();
     }
 
@@ -143,8 +146,8 @@ public class CartApiController : ControllerBase
             {
                 return BadRequest();
             }
-            IEnumerable<CartDetailDto>? details = cart.CartDetails;
-            await messageBus.PublishMessage(checkoutHeader, "checkoutmessagetopic");
+            checkoutHeader.CartDetails = cart.CartDetails;
+            await messageBus.PublishMessage(checkoutHeader, configuration["CheckoutMessageTopic"]);
         }
         catch (Exception ex)
         {

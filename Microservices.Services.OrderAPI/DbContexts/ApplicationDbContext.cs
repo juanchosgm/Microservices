@@ -1,4 +1,5 @@
 ﻿
+using Microservices.Services.OrderAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microservices.Services.OrderAPI.DbContexts;
@@ -8,4 +9,7 @@ public class ApplicationDbContext : DbContext
         : base(options)
     {
     }
+
+    public DbSet<OrderHeader> OrderHeaders { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
 }
