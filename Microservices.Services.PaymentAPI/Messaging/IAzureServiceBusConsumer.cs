@@ -1,5 +1,5 @@
 ﻿
-namespace Microservices.Services.OrderAPI.Messaging;
+namespace Microservices.Services.PaymentAPI.Messaging;
 public interface IAzureServiceBusConsumer
 {
     Task Start();

@@ -1,10 +1,9 @@
 ﻿
-namespace Microservices.Services.OrderAPI.Models;
+namespace Microservices.Services.PaymentAPI.Models;
 public class AzureServiceBusConfiguration
 {
     public string ServiceBusConnectionString { get; set; }
-    public string CheckoutMessageTopic { get; set; }
-    public string CheckoutSubscription { get; set; }
     public string OrderPaymentProcessTopic { get; set; }
+    public string PaymentSubscription { get; set; }
     public string OrderPaymentResultTopic { get; set; }
 }

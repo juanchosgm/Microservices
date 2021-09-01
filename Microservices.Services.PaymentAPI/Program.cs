@@ -1,28 +1,20 @@
-using AutoMapper;
 using Microservices.MessageBus;
-using Microservices.Services.ShoppingCartAPI;
-using Microservices.Services.ShoppingCartAPI.DbContexts;
-using Microservices.Services.ShoppingCartAPI.Repository;
-using Microsoft.EntityFrameworkCore;
+using Microservices.Services.PaymentAPI;
+using Microservices.Services.PaymentAPI.Messaging;
+using Microservices.Services.PaymentAPI.Models;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PaymentProcessor;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-IMapper? mapper = MappingConfig.RegisterMaps().CreateMapper();
-builder.Services.AddSingleton(mapper);
-builder.Services.AddMessageBus();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<ICartRepository, CartRepository>();
-builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+builder.Services.AddPaymentProcessor();
+builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
+builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
+builder.Services.AddOptions();
+builder.Services.Configure<AzureServiceBusConfiguration>(builder.Configuration);
 builder.Services.AddControllers();
-builder.Services.AddHttpClient<ICouponRepository, CouponRepository>(httpClient =>
-{
-    httpClient.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponAPI"]);
-});
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", opt =>
     {
@@ -42,7 +34,7 @@ builder.Services.AddAuthorization(opt =>
 });
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Microservices.Services.ShoppingCartAPI", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Microservices.Services.PaymentAPI", Version = "v1" });
     c.EnableAnnotations();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -78,7 +70,7 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservices.Services.ShoppingCartAPI v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservices.Services.PaymentAPI v1"));
 }
 
 app.UseHttpsRedirection();
@@ -86,5 +78,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseAzureServiceBusConsumer();
 
 app.Run();
