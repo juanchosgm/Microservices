@@ -23,7 +23,7 @@ public class AzureServiceBusConsumer : IAzureServiceBusConsumer
         this.busServiceSection = busServiceSection;
         this.messageBus = messageBus;
         ServiceBusClient? client = new(busServiceSection.Value.ServiceBusConnectionString);
-        checkoutProcessor = client.CreateProcessor(busServiceSection.Value.CheckoutMessageTopic, busServiceSection.Value.CheckoutSubscription);
+        checkoutProcessor = client.CreateProcessor(busServiceSection.Value.CheckoutMessageQueue);
         orderUpdatePaymentStatusProcessor = client.CreateProcessor(busServiceSection.Value.OrderPaymentResultTopic, busServiceSection.Value.CheckoutSubscription);
     }
 

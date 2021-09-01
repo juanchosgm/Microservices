@@ -161,7 +161,7 @@ public class CartApiController : ControllerBase
                 }
             }
             checkoutHeader.CartDetails = cart.CartDetails;
-            await messageBus.PublishMessage(checkoutHeader, configuration["CheckoutMessageTopic"]);
+            await messageBus.PublishMessage(checkoutHeader, configuration["CheckoutMessageQueue"]);
             await cartRepository.ClearCartAsync(checkoutHeader.UserId);
         }
         catch (Exception ex)
