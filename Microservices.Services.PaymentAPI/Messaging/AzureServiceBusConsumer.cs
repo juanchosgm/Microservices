@@ -50,7 +50,8 @@ public class AzureServiceBusConsumer : IAzureServiceBusConsumer
         UpdatePaymentResultMessageDto? updatePaymentResultMessage = new()
         {
             Status = result,
-            OrderId = payload.OrderId
+            OrderId = payload.OrderId,
+            Email = payload.Email
         };
         try
         {

@@ -1,11 +1,9 @@
-using Microservices.MessageBus;
-using Microservices.Services.OrderAPI;
-using Microservices.Services.OrderAPI.DbContexts;
-using Microservices.Services.OrderAPI.Messaging;
-using Microservices.Services.OrderAPI.Models;
-using Microservices.Services.OrderAPI.Repository;
+using Microservices.Services.EmailAPI;
+using Microservices.Services.EmailAPI.DbContexts;
+using Microservices.Services.EmailAPI.Messaging;
+using Microservices.Services.EmailAPI.Models;
+using Microservices.Services.EmailAPI.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
@@ -14,15 +12,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 DbContextOptionsBuilder<ApplicationDbContext>? optionsBuilder = new();
 optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-builder.Services.AddSingleton(new OrderRepository(optionsBuilder.Options));
+builder.Services.AddSingleton(new EmailRepository(optionsBuilder.Options));
 builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
-builder.Services.AddSingleton<IMessageBus, AzureServiceBusMessageBus>();
 builder.Services.AddOptions();
 builder.Services.Configure<AzureServiceBusConfiguration>(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Microservices.Services.OrderAPI", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Microservices.Services.Email", Version = "v1" });
 });
 
 WebApplication? app = builder.Build();
@@ -32,7 +29,7 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservices.Services.OrderAPI v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservices.Services.Email v1"));
 }
 
 app.UseHttpsRedirection();

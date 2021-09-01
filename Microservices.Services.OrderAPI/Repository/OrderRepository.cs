@@ -4,7 +4,7 @@ using Microservices.Services.OrderAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microservices.Services.OrderAPI.Repository;
-public class OrderRepository : IOrderRepository
+public class OrderRepository
 {
     private readonly DbContextOptions<ApplicationDbContext> options;
 

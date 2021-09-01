@@ -93,6 +93,7 @@ public class AzureServiceBusConsumer : IAzureServiceBusConsumer
             ExpiryMonthYear = orderHeader.ExpiryMonthYear,
             OrderId = orderHeader.OrderHeaderId,
             OrderTotal = orderHeader.OrderTotal,
+            Email = orderHeader.Email
         };
         try
         {
