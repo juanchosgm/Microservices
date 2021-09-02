@@ -16,7 +16,7 @@ public class CartService : BaseService, ICartService
         {
             ApiType = SD.ApiType.POST,
             Data = cart,
-            Url = $"{SD.ShoppingCartAPIBase}/api/cart",
+            Url = $"{SD.APIs}/api/cart",
             AccessToken = AccessToken
         });
     }
@@ -27,7 +27,7 @@ public class CartService : BaseService, ICartService
         {
             ApiType = SD.ApiType.PATCH,
             Data = cart,
-            Url = $"{SD.ShoppingCartAPIBase}/api/cart",
+            Url = $"{SD.APIs}/api/cart",
             AccessToken = AccessToken
         });
     }
@@ -38,7 +38,7 @@ public class CartService : BaseService, ICartService
         {
             ApiType = SD.ApiType.POST,
             Data = cartHeader,
-            Url = $"{SD.ShoppingCartAPIBase}/api/cart/Checkout",
+            Url = $"{SD.APIs}/api/cart/Checkout",
             AccessToken = AccessToken
         });
     }
@@ -48,7 +48,7 @@ public class CartService : BaseService, ICartService
         return await SendAsync<T>(new ApiRequest
         {
             ApiType = SD.ApiType.GET,
-            Url = $"{SD.ShoppingCartAPIBase}/api/cart/{userId}",
+            Url = $"{SD.APIs}/api/cart/{userId}",
             AccessToken = AccessToken
         });
     }
@@ -58,7 +58,7 @@ public class CartService : BaseService, ICartService
         return await SendAsync<T>(new ApiRequest
         {
             ApiType = SD.ApiType.DELETE,
-            Url = $"{SD.ShoppingCartAPIBase}/api/cart/RemoveCoupon/{userId}",
+            Url = $"{SD.APIs}/api/cart/RemoveCoupon/{userId}",
             AccessToken = AccessToken
         });
     }
@@ -68,7 +68,7 @@ public class CartService : BaseService, ICartService
         return await SendAsync<T>(new ApiRequest
         {
             ApiType = SD.ApiType.DELETE,
-            Url = $"{SD.ShoppingCartAPIBase}/api/cart/{cartId}",
+            Url = $"{SD.APIs}/api/cart/{cartId}",
             AccessToken = AccessToken
         });
     }
@@ -79,7 +79,7 @@ public class CartService : BaseService, ICartService
         {
             ApiType = SD.ApiType.PUT,
             Data = cart,
-            Url = $"{SD.ShoppingCartAPIBase}/api/cart",
+            Url = $"{SD.APIs}/api/cart",
             AccessToken = AccessToken
         });
     }

@@ -16,7 +16,7 @@ public class ProductService : BaseService, IProductService
         {
             ApiType = SD.ApiType.POST,
             Data = product,
-            Url = $"{SD.ProductAPIBase}/api/products",
+            Url = $"{SD.APIs}/api/products",
             AccessToken = AccessToken
         });
     }
@@ -26,7 +26,7 @@ public class ProductService : BaseService, IProductService
         return await SendAsync<T>(new ApiRequest
         {
             ApiType = SD.ApiType.DELETE,
-            Url = $"{SD.ProductAPIBase}/api/products/{id}",
+            Url = $"{SD.APIs}/api/products/{id}",
             AccessToken = AccessToken
         });
     }
@@ -36,7 +36,7 @@ public class ProductService : BaseService, IProductService
         return await SendAsync<T>(new ApiRequest
         {
             ApiType = SD.ApiType.GET,
-            Url = $"{SD.ProductAPIBase}/api/products",
+            Url = $"{SD.APIs}/api/products",
             AccessToken = AccessToken
         });
     }
@@ -46,7 +46,7 @@ public class ProductService : BaseService, IProductService
         return await SendAsync<T>(new ApiRequest
         {
             ApiType = SD.ApiType.GET,
-            Url = $"{SD.ProductAPIBase}/api/products/{id}",
+            Url = $"{SD.APIs}/api/products/{id}",
             AccessToken = AccessToken
         });
     }
@@ -57,7 +57,7 @@ public class ProductService : BaseService, IProductService
         {
             ApiType = SD.ApiType.PUT,
             Data = product,
-            Url = $"{SD.ProductAPIBase}/api/products",
+            Url = $"{SD.APIs}/api/products",
             AccessToken = AccessToken
         });
     }
