@@ -78,7 +78,8 @@ if (builder.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+using var scope = app.Services.CreateScope();
+await scope.ServiceProvider.GetService<ApplicationDbContext>().Database.MigrateAsync();
 app.MapControllers();
 
 app.Run();
